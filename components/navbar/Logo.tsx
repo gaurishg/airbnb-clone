@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import logoPic from '@/public/images/logo.png';
 
 export default function Logo() {
     const router = useRouter();
@@ -11,6 +12,6 @@ export default function Logo() {
         className="hidden md:block cursor-pointer"
         height="100"
         width="100"
-        src="/images/logo.png"
+        src={logoPic}
     />
 }
