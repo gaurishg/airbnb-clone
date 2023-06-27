@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { Nunito } from 'next/font/google';
 import ClientOnly from './components/ClientOnly';
 import RegisterModal from './components/modals/RegisterModal';
+import ToasterProvider from './providers/ToasterProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 const nunito = Nunito({ subsets: ['latin'] });
@@ -22,8 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={nunito.className}>
         <ClientOnly>
-            <RegisterModal />
-            <Navbar />
+          <ToasterProvider />
+          <RegisterModal />
+          <Navbar />
         </ClientOnly>
         {children}
       </body>

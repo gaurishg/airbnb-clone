@@ -1,8 +1,8 @@
 'use client';
 
 import axios from 'axios';
-import {} from 'react-icons/ai';
-import {} from 'react-icons/fc';
+import { AiFillGithub } from 'react-icons/ai';
+import { FcGoogle } from 'react-icons/fc';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
@@ -11,6 +11,8 @@ import { registerModalSliceActions } from '@/app/store/modalSlicer';
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
+import { toast } from 'react-hot-toast';
+import Button from '../Button';
 
 export default function RegisterModal() {
     const isOpen = useSelector((state: RootState) => state.registerModal.isOpen);
@@ -37,7 +39,7 @@ export default function RegisterModal() {
                 dispatch(registerModalSliceActions.onClose());
             })
             .catch(error => {
-                console.error(error);
+                toast.error('Something went wrong.');
             })
             .finally(() => {
                 setIsLoading(false);
@@ -75,6 +77,46 @@ export default function RegisterModal() {
         </div>
     );
 
+    const footerContent = (
+        <div className='flex flex-col gap-4 mt-3'>
+            <hr />
+            <Button
+                outline
+                label='Continue with Google'
+                icon={FcGoogle}
+                onClick={() => {}}
+            />
+            <Button
+                outline
+                label='Continue with Github'
+                icon={AiFillGithub}
+                onClick={() => {}}
+            />
+            <div
+                className='
+                    text-neutral-500
+                    text-center
+                    mt-4
+                    font-light    
+                '
+            >
+                <div className='justify-center flex flex-row items-center gap-2'>
+                    <div>Already have an account?</div>
+                    <div
+                        onClick={() => dispatch(registerModalSliceActions.onClose())}
+                        className='
+                            text-neutral-800
+                            cursor-pointer
+                            hover:underline
+                        '
+                    >
+                        Log in
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
     return <Modal
         disabled={isLoading}
         isOpen={isOpen}
@@ -83,5 +125,6 @@ export default function RegisterModal() {
         onClose={() => dispatch(registerModalSliceActions.onClose())}
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}
+        footer={footerContent}
     />;
 }

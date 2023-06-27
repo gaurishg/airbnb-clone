@@ -5,7 +5,7 @@ interface RegisterModalState {
 }
 
 const initialState: RegisterModalState = {
-    isOpen: true
+    isOpen: false
 }
 
 export const registerModalSlice = createSlice({
