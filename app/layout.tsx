@@ -1,9 +1,9 @@
-import Navbar from '@/components/navbar/Navbar';
+import Navbar from './components/navbar/Navbar';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { Nunito } from 'next/font/google';
-import ClientOnly from '@/components/ClientOnly';
-import RegisterModal from '@/components/modals/RegisterModal';
+import ClientOnly from './components/ClientOnly';
+import RegisterModal from './components/modals/RegisterModal';
 
 const inter = Inter({ subsets: ['latin'] });
 const nunito = Nunito({ subsets: ['latin'] });
