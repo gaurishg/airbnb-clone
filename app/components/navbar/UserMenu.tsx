@@ -4,9 +4,12 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import Avatar from '../Avatar';
 import { useCallback, useState } from 'react';
 import MenuItem from './MenuItem';
+import { useDispatch } from 'react-redux';
+import { registerModalSliceActions } from '@/app/store/modalSlicer';
 
 export default function UserMenu() {
     const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch();
 
     const toggleopen = useCallback(() => {
         setIsOpen(value => !value);
@@ -78,7 +81,10 @@ export default function UserMenu() {
                             label='Login'
                         />
                         <MenuItem
-                            onClick={() => {}}
+                            onClick={() => {
+                                dispatch(registerModalSliceActions.onOpen());
+                                setIsOpen(false);
+                            }}
                             label='Sign up'
                         />
                     </>
