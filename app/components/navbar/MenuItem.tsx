@@ -13,6 +13,7 @@ export default function MenuItem({ onClick, label }: Props) {
                 px-4
                 py-3
                 hover:bg-neutral-100
+                cursor-pointer
                 transition
                 font-semibold
             "

@@ -5,9 +5,16 @@ import Avatar from '../Avatar';
 import { useCallback, useState } from 'react';
 import MenuItem from './MenuItem';
 import { useDispatch } from 'react-redux';
-import { registerModalSliceActions } from '@/app/store/modalSlicer';
+import { signOut } from 'next-auth/react';
+import { User } from '@prisma/client';
+import { loginModalSliceActions } from '@/app/store/loginModalSlicer';
+import { registerModalSliceActions } from '@/app/store/registerModalSlicer';
 
-export default function UserMenu() {
+interface Props {
+    currentUser?: User | null
+}
+
+export default function UserMenu({ currentUser }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const dispatch = useDispatch();
 
@@ -74,10 +81,40 @@ export default function UserMenu() {
                     text-sm
                 '
             >
-                <div className='flex flex-col cursor-pointer'>
+                {currentUser ? (<div className='flex flex-col cursor-pointer'>
                     <>
                         <MenuItem
                             onClick={() => {}}
+                            label='My trips'
+                        />
+                        <MenuItem
+                            onClick={() => {}}
+                            label='My favourites'
+                        />
+                        <MenuItem
+                            onClick={() => {}}
+                            label='My reservations'
+                        />
+                        <MenuItem
+                            onClick={() => {}}
+                            label='My properties'
+                        />
+                        <MenuItem
+                            onClick={() => {}}
+                            label='Airbnb my home'
+                        />
+                        <hr />
+                        <MenuItem
+                            onClick={signOut}
+                            label='Logout'
+                        />
+                    </>
+                </div>) : (<>
+                    <MenuItem
+                            onClick={() => {
+                                dispatch(loginModalSliceActions.onOpen());
+                                setIsOpen(false);
+                            }}
                             label='Login'
                         />
                         <MenuItem
@@ -87,8 +124,7 @@ export default function UserMenu() {
                             }}
                             label='Sign up'
                         />
-                    </>
-                </div>
+                </>)}
             </div>
         )}
     </div>

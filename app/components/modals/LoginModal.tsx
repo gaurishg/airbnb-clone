@@ -1,21 +1,23 @@
 'use client';
 
-import axios from 'axios';
+import { signIn } from 'next-auth/react';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/store/store';
 import { useState } from 'react';
-import { registerModalSliceActions } from '@/app/store/registerModalSlicer';
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
 import { toast } from 'react-hot-toast';
 import Button from '../Button';
+import { loginModalSliceActions } from '@/app/store/loginModalSlicer';
+import { useRouter } from 'next/navigation';
 
-export default function RegisterModal() {
-    const isOpen = useSelector((state: RootState) => state.registerModal.isOpen);
+export default function LoginModal() {
+    const router = useRouter();
+    const isOpen = useSelector((state: RootState) => state.loginModal.isOpen);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const {
@@ -26,7 +28,6 @@ export default function RegisterModal() {
         }
     } = useForm<FieldValues>({
         defaultValues: {
-            name: '',
             email: '',
             password: ''
         }
@@ -34,32 +35,29 @@ export default function RegisterModal() {
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
-        axios.post('/api/register', data)
-            .then(() => {
-                dispatch(registerModalSliceActions.onClose());
-            })
-            .catch(error => {
-                toast.error('Something went wrong.');
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        signIn("credentials", {
+            ...data,
+            redirect: false
+        }).then(value => {
+            if (value?.ok) {
+                toast.success("Logged in");
+                router.refresh();
+                dispatch(loginModalSliceActions.onClose());
+            } 
+            if (value?.error) {
+                toast.error(value.error);
+            }
+        }).finally(() => {
+            setIsLoading(false);
+        });
     }
 
     const bodyContent = (
         <div className='flex flex-col gap-4'>
-            <Heading title='Welcome to Airbnb' subtitle='Create an account'/>
+            <Heading title='Welcome back' subtitle='Login to your account'/>
             <Input
                 id='email'
                 label='Email'
-                disabled={isLoading}
-                register={register}
-                errors={errors}
-                required
-            />
-            <Input
-                id='name'
-                label='Name'
                 disabled={isLoading}
                 register={register}
                 errors={errors}
@@ -103,7 +101,7 @@ export default function RegisterModal() {
                 <div className='justify-center flex flex-row items-center gap-2'>
                     <div>Already have an account?</div>
                     <div
-                        onClick={() => dispatch(registerModalSliceActions.onClose())}
+                        onClick={() => dispatch(loginModalSliceActions.onClose())}
                         className='
                             text-neutral-800
                             cursor-pointer
@@ -120,9 +118,9 @@ export default function RegisterModal() {
     return <Modal
         disabled={isLoading}
         isOpen={isOpen}
-        title='Register'
+        title='Login'
         actionLabel='Continue'
-        onClose={() => dispatch(registerModalSliceActions.onClose())}
+        onClose={() => dispatch(loginModalSliceActions.onClose())}
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}
         footer={footerContent}
