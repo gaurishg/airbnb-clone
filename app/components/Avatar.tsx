@@ -3,12 +3,16 @@
 import Image from "next/image";
 import placeholderPic from '@/public/images/placeholder.jpg';
 
-export default function Avatar() {
+interface Props {
+    src?: string | null;
+}
+
+export default function Avatar({ src }: Props) {
     return <Image 
         className="rounded-full"
         height="30"
         width="30"
         alt="Avatar"
-        src={placeholderPic}
+        src={src || placeholderPic}
     />
 }
