@@ -6,12 +6,12 @@ import { useCallback, useState } from 'react';
 import MenuItem from './MenuItem';
 import { useDispatch } from 'react-redux';
 import { signOut } from 'next-auth/react';
-import { User } from '@prisma/client';
 import { loginModalSliceActions } from '@/app/store/loginModalSlicer';
 import { registerModalSliceActions } from '@/app/store/registerModalSlicer';
+import { SafeUser } from '@/app/types';
 
 interface Props {
-    currentUser?: User | null
+    currentUser?: SafeUser | null
 }
 
 export default function UserMenu({ currentUser }: Props) {
